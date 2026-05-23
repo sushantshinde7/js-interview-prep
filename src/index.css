@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+@theme {
+  /* Register your custom fonts so you can use utility classes like font-sans and font-mono-code */
+  --font-sans: 'DM Sans', sans-serif;
+  --font-mono-code: 'JetBrains Mono', monospace;
+}
+
+/* Global body styling (Tailwind's Preflight takes care of box-sizing/margins/padding) */
+body {
+  background-color: #0d0d0f;
+  color: #e8e8f0;
+}
+
+/* Custom scrollbar styling */
+::-webkit-scrollbar { 
+  width: 4px; 
+}
+::-webkit-scrollbar-track { 
+  background: transparent; 
+}
+::-webkit-scrollbar-thumb { 
+  background: #2a2a30; 
+  border-radius: 4px; 
+}
