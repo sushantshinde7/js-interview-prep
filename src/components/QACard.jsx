@@ -19,7 +19,7 @@ export default function QACard({ q, a }) {
       ">
 
         <span className="
-          mt-[1px] flex-shrink-0
+          mt-px shrink-0
           text-[13px] font-semibold
           text-[#60a5fa]
         ">
@@ -37,7 +37,7 @@ export default function QACard({ q, a }) {
         <button
           onClick={() => setRevealed(v => !v)}
           className={[
-            'flex-shrink-0 rounded-md border px-2.5 py-1',
+            'shrink-0 rounded-md border px-2.5 py-1',
             'text-[11px] transition-all duration-150',
             revealed
               ? 'border-[#7c6af7] bg-[#1e1b3a] text-[#a599ff]'
@@ -58,7 +58,7 @@ export default function QACard({ q, a }) {
         ">
 
           <span className="
-            flex-shrink-0
+            shrink-0
             text-[13px] font-semibold
             text-[#4ade80]
           ">

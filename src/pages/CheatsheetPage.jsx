@@ -1,58 +1,105 @@
 import { SNIPPETS } from '../data/snippets.js'
 import Tag from '../components/Tag.jsx'
 
-// CheatsheetPage shows all topics in a collapsed, scannable reference view.
-// Each card shows the title, difficulty tag, and one-liner theory.
-// No code blocks here — it's intentionally minimal for quick review.
+// Fast-scannable mental-model reference page.
 
 export default function CheatsheetPage() {
-  const entries = Object.entries(SNIPPETS) // [key, snippet][]
+  const entries = Object.entries(SNIPPETS)
 
   return (
-    <div className="py-7 px-8 max-w-200">
+    <div className="mx-auto max-w-5xl px-6 py-8">
 
       {/* Header */}
-      <h2 className="text-[22px] font-semibold mb-1.5 text-zinc-100">
-        Cheatsheet
-      </h2>
-      <p className="text-[#8a8a9a] text-sm mb-6">
-        One-liner reference for every concept. No code — just the mental model.
-      </p>
+      <div className="mb-7">
+
+        <div className="mb-2 flex items-center gap-2">
+          <div className="h-2 w-2 rounded-full bg-[#7c6af7]" />
+
+          <span className="
+            text-[11px] font-semibold uppercase
+            tracking-[0.18em] text-[#7c6af7]
+          ">
+            Quick Revision
+          </span>
+        </div>
+
+        <h1 className="
+          mb-2 text-3xl font-semibold
+          tracking-[-0.03em]
+          text-[#e8e8f0]
+        ">
+          JavaScript Cheatsheet
+        </h1>
+
+        <p className="
+          max-w-2xl text-[15px]
+          leading-7 text-[#8a8a9a]
+        ">
+          Fast mental-model revision for important JavaScript
+          concepts, interview patterns, and tricky behaviors.
+        </p>
+
+      </div>
 
       {/* Cards */}
-      <div className="flex flex-col gap-2.5">
+      <div className="flex flex-col gap-3">
         {entries.map(([key, snippet]) => (
           <div
             key={key}
-            className="bg-[#1a1a1e] border border-[#2a2a30] rounded-lg py-3.5 px-4"
+            className="
+              rounded-xl border border-[#2a2a30]
+              bg-[#1a1a1e]
+              p-4
+            "
           >
-            {/* Title + tag row */}
-            <div className="flex items-center gap-2 mb-1.5">
-              <span className="font-semibold text-sm text-[#e8e8f0]">
+
+            <div className="mb-2 flex items-center gap-2">
+              <h2 className="
+                text-sm font-semibold
+                text-[#e8e8f0]
+              ">
                 {snippet.title}
-              </span>
+              </h2>
+
               <Tag level={snippet.difficulty} />
             </div>
 
-            {/* One-liner theory */}
-            <p className="text-xs text-[#8a8a9a] leading-relaxed">
+            <p className="
+              text-[13px] leading-6
+              text-[#8a8a9a]
+            ">
               {snippet.theory}
             </p>
 
-            {/* Gotcha preview */}
             {snippet.gotcha && (
-              <p className="text-[12px] text-amber-400 mt-2 leading-normal">
-                ⚠ {snippet.gotcha}
-              </p>
+              <div className="
+                mt-3 rounded-lg
+                border border-amber-400/15
+                bg-[#2a1f08]
+                px-3 py-2
+              ">
+                <p className="
+                  text-xs leading-6
+                  text-amber-300
+                ">
+                  ⚠ {snippet.gotcha}
+                </p>
+              </div>
             )}
+
           </div>
         ))}
       </div>
 
-      {/* Footer note */}
-      <p className="text-[12px] text-[#5a5a6a] mt-6 leading-relaxed">
-        More topics will appear here as content is added to each subtopic.
+      {/* Footer */}
+      <p className="
+        mt-7 text-xs leading-6
+        text-[#5a5a6a]
+      ">
+        More concepts and interview patterns will appear here
+        as the knowledge base expands.
       </p>
+
     </div>
   )
 }

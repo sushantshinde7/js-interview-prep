@@ -33,7 +33,7 @@ export default function TopicPage() {
       {/* ── Content area ─────────────────────────── */}
       <div className="flex-1 overflow-y-auto px-8 py-6">
         {snippet ? (
-          <div className="max-w-[740px]">
+          <div className="max-w-185">
 
             {/* Header */}
             <div className="flex items-center gap-2.5 mb-1.5">
@@ -108,7 +108,7 @@ export default function TopicPage() {
           </div>
         ) : (
           /* Subtopic has no content yet */
-          <div className="bg-[#1a1a1e] border border-[#2a2a30] rounded-xl p-6 max-w-[480px]">
+          <div className="bg-[#1a1a1e] border border-[#2a2a30] rounded-xl p-6 max-w-120">
             <div className="text-base font-semibold mb-2 text-[#e8e8f0]">{activeSubtopic}</div>
             <div className="text-sm text-[#8a8a9a] leading-relaxed mb-4">
               Content for this subtopic is being added. You can still mark your progress below.

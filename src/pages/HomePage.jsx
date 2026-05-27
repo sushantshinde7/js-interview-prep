@@ -141,7 +141,7 @@ export default function HomePage() {
               >
 
                 {/* Progress */}
-                <div className="mt-0.5 flex-shrink-0">
+                <div className="mt-0.5 shrink-0">
                   <ProgressRing
                     pct={pct}
                     size={38}

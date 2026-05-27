@@ -1,21 +1,24 @@
 import { useState } from 'react'
 import { QUIZ_QUESTIONS } from '../data/topics.js'
 
-// QuizPage is the "Interview Mode" — MCQ questions with instant feedback.
-// Flow: question → pick option → see explanation → next → results screen
+// Interview-focused MCQ flow with instant feedback.
 
 export default function QuizPage() {
-  const [idx, setIdx]         = useState(0)
-  const [selected, setSelected] = useState(null)   // index of chosen option
-  const [score, setScore]     = useState(0)
-  const [done, setDone]       = useState(false)
+  const [idx, setIdx] = useState(0)
+  const [selected, setSelected] = useState(null)
+  const [score, setScore] = useState(0)
+  const [done, setDone] = useState(false)
 
   const q = QUIZ_QUESTIONS[idx]
 
   function pick(optionIndex) {
-    if (selected !== null) return          // already answered
+    if (selected !== null) return
+
     setSelected(optionIndex)
-    if (optionIndex === q.answer) setScore(s => s + 1)
+
+    if (optionIndex === q.answer) {
+      setScore(s => s + 1)
+    }
   }
 
   function next() {
@@ -34,75 +37,166 @@ export default function QuizPage() {
     setDone(false)
   }
 
-  // ── Results screen ──────────────────────────────────────────────────────
+  // ── Results screen ───────────────────────
   if (done) {
-    const emoji = score === QUIZ_QUESTIONS.length ? '🎉' : score >= 3 ? '📖' : '💪'
+    const emoji =
+      score === QUIZ_QUESTIONS.length
+        ? '🎉'
+        : score >= 3
+          ? '📖'
+          : '💪'
+
     const msg =
       score === QUIZ_QUESTIONS.length
         ? "Perfect! You're interview ready."
         : score >= 3
-        ? 'Good work! Review the ones you missed.'
-        : "Keep practicing — you'll get there!"
+          ? 'Good work! Review the concepts you missed.'
+          : 'Keep practicing — consistency matters.'
 
     return (
-      <div className="py-10 px-8 max-w-130">
-        <div className="text-[48px] mb-3">{emoji}</div>
-        <h2 className="text-2xl font-semibold mb-1.5 text-zinc-100">
-          Score: {score}/{QUIZ_QUESTIONS.length}
-        </h2>
-        <p className="text-[#8a8a9a] text-sm mb-6">{msg}</p>
-        <button
-          onClick={reset}
-          className="bg-[#7c6af7] text-white rounded-[7px] py-2.5 px-6 cursor-pointer text-sm font-semibold font-sans hover:bg-[#6855e3] transition-colors"
-        >
-          Try again
-        </button>
+      <div className="mx-auto max-w-3xl px-6 py-10">
+
+        <div className="
+          rounded-2xl border border-[#2a2a30]
+          bg-[#1a1a1e]
+          p-8
+        ">
+          <div className="mb-4 text-5xl">
+            {emoji}
+          </div>
+
+          <h1 className="
+            mb-2 text-3xl font-semibold
+            tracking-[-0.03em]
+            text-[#e8e8f0]
+          ">
+            Score: {score}/{QUIZ_QUESTIONS.length}
+          </h1>
+
+          <p className="
+            mb-7 text-[15px] leading-7
+            text-[#8a8a9a]
+          ">
+            {msg}
+          </p>
+
+          <button
+            onClick={reset}
+            className="
+              rounded-lg bg-[#7c6af7]
+              px-5 py-2.5
+              text-sm font-semibold text-white
+              transition-all duration-150
+              hover:bg-[#6855e3]
+            "
+          >
+            Try again
+          </button>
+        </div>
+
       </div>
     )
   }
 
-  // ── Question screen ─────────────────────────────────────────────────────
+  // ── Question screen ──────────────────────
   return (
-    <div className="py-8 px-8 max-w-155">
+    <div className="mx-auto max-w-4xl px-6 py-8">
 
-      {/* Progress bar + score */}
-      <div className="flex items-center gap-2.5 mb-6">
-        <span className="text-xs text-[#8a8a9a] shrink-0">
-          Question {idx + 1} of {QUIZ_QUESTIONS.length}
-        </span>
-        <div className="flex-1 bg-[#2a2a30] rounded-sm h-1">
-          <div
-            className="bg-[#7c6af7] h-1 rounded-sm transition-all duration-300"
-            style={{ width: `${((idx + 1) / QUIZ_QUESTIONS.length) * 100}%` }}
-          />
+      {/* Header */}
+      <div className="mb-7">
+
+        <div className="mb-2 flex items-center gap-2">
+          <div className="h-2 w-2 rounded-full bg-[#7c6af7]" />
+
+          <span className="
+            text-[11px] font-semibold uppercase
+            tracking-[0.18em] text-[#7c6af7]
+          ">
+            Interview Mode
+          </span>
         </div>
-        <span className="text-xs text-[#7c6af7] font-semibold shrink-0">
-          {score} pts
-        </span>
+
+        <h1 className="
+          mb-2 text-3xl font-semibold
+          tracking-[-0.03em]
+          text-[#e8e8f0]
+        ">
+          JavaScript Quiz
+        </h1>
+
+        <p className="
+          text-[15px] leading-7
+          text-[#8a8a9a]
+        ">
+          Practice common frontend interview questions with
+          explanations and instant feedback.
+        </p>
       </div>
 
-      {/* Question text */}
-      <div className="bg-[#1a1a1e] border border-[#2a2a30] rounded-[10px] p-5 mb-4">
-        {/* pre preserves newlines used for code questions */}
-        <pre className="font-sans text-[15px] leading-[1.65] whitespace-pre-wrap text-[#e8e8f0]">
+      {/* Progress */}
+      <div className="mb-6 flex items-center gap-3">
+
+        <span className="
+          shrink-0 text-xs
+          text-[#8a8a9a]
+        ">
+          Question {idx + 1} of {QUIZ_QUESTIONS.length}
+        </span>
+
+        <div className="
+          h-1.5 flex-1 overflow-hidden
+          rounded-full bg-[#2a2a30]
+        ">
+          <div
+            className="
+              h-full rounded-full bg-[#7c6af7]
+              transition-all duration-300
+            "
+            style={{
+              width: `${((idx + 1) / QUIZ_QUESTIONS.length) * 100}%`,
+            }}
+          />
+        </div>
+
+        <span className="
+          shrink-0 text-xs font-semibold
+          text-[#7c6af7]
+        ">
+          {score} pts
+        </span>
+
+      </div>
+
+      {/* Question */}
+      <div className="
+        mb-4 rounded-2xl
+        border border-[#2a2a30]
+        bg-[#1a1a1e]
+        p-5
+      ">
+        <pre className="
+          whitespace-pre-wrap
+          font-sans text-[15px]
+          leading-7 text-[#e8e8f0]
+        ">
           {q.q}
         </pre>
       </div>
 
       {/* Options */}
-      <div className="flex flex-col gap-2 mb-4">
+      <div className="mb-5 flex flex-col gap-2.5">
         {q.options.map((opt, i) => {
-          // Color logic — only applied after user picks
-          let dynamicClasses = "bg-[#1a1a1e] border-[#2a2a30] text-[#e8e8f0]"
-          
+          let styles =
+            'border-[#2a2a30] bg-[#1a1a1e] text-[#e8e8f0] hover:border-[#3f3f4a] hover:bg-[#232329]'
+
           if (selected !== null) {
-            if (i === q.answer) { 
-              dynamicClasses = "bg-[#0d2318] border-green-400 text-green-400" 
-            } else if (i === selected && i !== q.answer) { 
-              dynamicClasses = "bg-[#2a0f0f] border-red-400 text-red-400" 
+            if (i === q.answer) {
+              styles =
+                'border-green-400 bg-[#0d2318] text-green-400'
+            } else if (i === selected) {
+              styles =
+                'border-red-400 bg-[#2a0f0f] text-red-400'
             }
-          } else {
-            dynamicClasses += " hover:bg-[#25252b] hover:border-[#3f3f4a]"
           }
 
           return (
@@ -110,41 +204,95 @@ export default function QuizPage() {
               key={i}
               onClick={() => pick(i)}
               disabled={selected !== null}
-              className={`${dynamicClasses} border rounded-grow p-[11px_16px] text-left text-xs font-sans transition-all duration-150 flex gap-2.5 items-center ${selected === null ? 'cursor-pointer' : 'cursor-default'}`}
+              className={[
+                'flex items-center gap-3 rounded-xl border',
+                'px-4 py-3 text-left text-sm',
+                'transition-all duration-150',
+                selected === null
+                  ? 'cursor-pointer'
+                  : 'cursor-default',
+                styles,
+              ].join(' ')}
             >
-              {/* Option letter: A B C D */}
-              <span className="text-[11px] text-[#5a5a6a] font-mono shrink-0">
+
+              <span className="
+                flex h-6 w-6 shrink-0
+                items-center justify-center
+                rounded-md bg-[#141416]
+                font-mono-code text-[11px]
+                text-[#5a5a6a]
+              ">
                 {String.fromCharCode(65 + i)}
               </span>
-              {opt}
+
+              <span className="leading-6">
+                {opt}
+              </span>
+
             </button>
           )
         })}
       </div>
 
-      {/* Explanation — shown after picking */}
+      {/* Explanation */}
       {selected !== null && (
-        <div className="mb-4">
-          <div className={`bg-[#1a1a1e] border border-[#2a2a30] rounded-r-lg p-[10px_14px] border-l-3 ${selected === q.answer ? 'border-l-green-400' : 'border-l-red-400'}`}>
-            <div className={`text-[11px] font-semibold mb-1 uppercase ${selected === q.answer ? 'text-green-400' : 'text-red-400'}`}>
-              {selected === q.answer ? '✓ correct' : '✗ incorrect'}
+        <div className="mb-5">
+
+          <div
+            className={[
+              'rounded-r-xl border border-[#2a2a30]',
+              'border-l-[3px] bg-[#1a1a1e]',
+              'px-4 py-3',
+              selected === q.answer
+                ? 'border-l-green-400'
+                : 'border-l-red-400',
+            ].join(' ')}
+          >
+
+            <div
+              className={[
+                'mb-1 text-[11px] font-semibold uppercase tracking-wide',
+                selected === q.answer
+                  ? 'text-green-400'
+                  : 'text-red-400',
+              ].join(' ')}
+            >
+              {selected === q.answer
+                ? '✓ correct'
+                : '✗ incorrect'}
             </div>
-            <p className="text-sm text-[#e8e8f0] leading-normal">
+
+            <p className="
+              text-sm leading-7
+              text-[#e8e8f0]
+            ">
               {q.explanation}
             </p>
+
           </div>
+
         </div>
       )}
 
-      {/* Next button — only visible after picking */}
+      {/* Next */}
       {selected !== null && (
         <button
           onClick={next}
-          className="bg-[#7c6af7] text-white rounded-[7px] py-2.25 px-5.5 cursor-pointer text-xs font-semibold font-sans hover:bg-[#6855e3] transition-colors"
+          className="
+            rounded-lg bg-[#7c6af7]
+            px-5 py-2.5
+            text-sm font-semibold text-white
+            transition-all duration-150
+            hover:bg-[#6855e3]
+        "
         >
-          {idx < QUIZ_QUESTIONS.length - 1 ? 'Next →' : 'See results'}
+          {idx < QUIZ_QUESTIONS.length - 1
+            ? 'Next →'
+            : 'See results'}
         </button>
       )}
+
     </div>
   )
 }
+
