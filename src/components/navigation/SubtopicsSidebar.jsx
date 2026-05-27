@@ -1,6 +1,6 @@
-import { useParams, NavLink } from 'react-router-dom'
-import { TOPICS } from '../../data/topics.js'
-import { useProgress } from '../../hooks/useProgress.js'
+import { useParams, NavLink } from "react-router-dom";
+import { TOPICS } from "../../data/topics.js";
+import { useProgress } from "../../hooks/useProgress.js";
 
 // Sidebar — subtopics only. Renders as a thin left panel.
 // Only visible when the current route is /topic/:topicId.
@@ -11,30 +11,31 @@ import { useProgress } from '../../hooks/useProgress.js'
 //  but we keep it as NavLink-ready structure)
 
 const STATUS_DOT = {
-  unseen:    '#3a3a44',
-  learning:  '#fbbf24',
-  confident: '#4ade80',
-}
+  unseen: "#3a3a44",
+  learning: "#fbbf24",
+  confident: "#4ade80",
+};
 
 export default function SubtopicsSidebar() {
-  const { topicId } = useParams()
-  const { getStatus } = useProgress()
+  const { topicId } = useParams();
+  const { getStatus } = useProgress();
 
   // Not on a topic page — render nothing, takes zero layout space
-  if (!topicId) return null
+  if (!topicId) return null;
 
-  const topic = TOPICS.find(t => t.id === topicId)
-  if (!topic) return null
+  const topic = TOPICS.find((t) => t.id === topicId);
+  if (!topic) return null;
 
   return (
-    <aside className="
+    <aside
+      className="
       w-44 flex-shrink-0
       bg-[#0d0d0f] border-r border-[#2a2a30]
       overflow-y-auto
       sticky top-[4.5rem]
       h-[calc(100vh-4.5rem)]
-    ">
-
+    "
+    >
       {/* Topic label header */}
       <div className="px-4 pt-4 pb-2 text-[10px] font-semibold text-[#5a5a6a] uppercase tracking-widest">
         {topic.label}
@@ -42,8 +43,8 @@ export default function SubtopicsSidebar() {
 
       {/* Subtopic list */}
       <nav className="flex flex-col px-2 pb-4">
-        {topic.subtopics.map(sub => {
-          const st = getStatus(topicId, sub)
+        {topic.subtopics.map((sub) => {
+          const st = getStatus(topicId, sub);
 
           return (
             <NavLink
@@ -52,11 +53,15 @@ export default function SubtopicsSidebar() {
               // For now points to the same topic page — TopicPage manages
               // which subtopic is active via its own state seeded from URL later
               to={`/topic/${topicId}/${encodeURIComponent(sub)}`}
-              className="
-                flex items-center gap-2 px-3 py-1.5 rounded-md
-                text-[13px] no-underline transition-all duration-150
-                text-[#8a8a9a] hover:text-[#e8e8f0] hover:bg-[#1a1a1e]
-              "
+              className={({ isActive }) =>
+                [
+                  "flex items-center gap-2 rounded-md px-3 py-1.5",
+                  "text-[13px] no-underline transition-all duration-150",
+                  isActive
+                    ? "bg-[#1e1b3a] text-[#a599ff]"
+                    : "text-[#8a8a9a] hover:bg-[#1a1a1e] hover:text-[#e8e8f0]",
+                ].join(" ")
+              }
               // We intentionally don't use isActive here because all subtopics
               // point to the same route for now. Will update when subtopic
               // routing is added.
@@ -67,10 +72,9 @@ export default function SubtopicsSidebar() {
               />
               <span className="truncate">{sub}</span>
             </NavLink>
-          )
+          );
         })}
       </nav>
-
     </aside>
-  )
+  );
 }

@@ -17,7 +17,13 @@ const SECTIONS = [
 
 export default function MainNavbar() {
   return (
-    <header className="flex items-center justify-between px-5 h-12 bg-[#0d0d0f] border-b border-[#2a2a30] flex-shrink-0 sticky top-0 z-50">
+    <header className="sticky top-0 z-50
+                       flex h-12 flex-shrink-0 items-center justify-between
+                       border-b border-[#2a2a30]
+                       bg-[#0d0d0f]/95
+                       px-5
+                       backdrop-blur"
+     >
 
       {/* Brand */}
       <NavLink
@@ -36,7 +42,7 @@ export default function MainNavbar() {
       <nav className="flex items-center gap-1">
         {SECTIONS.map((s, i) => (
           <NavLink
-            key={i}
+            key={s.label}
             to={s.to}
             end={s.end}
             className={({ isActive }) =>
