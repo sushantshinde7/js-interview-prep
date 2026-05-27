@@ -6,20 +6,39 @@
   --font-mono-code: 'JetBrains Mono', monospace;
 }
 
-/* Global body styling (Tailwind's Preflight takes care of box-sizing/margins/padding) */
+:root {
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background-color: #0d0d0f;
   color: #e8e8f0;
+  font-family: var(--font-sans);
 }
 
-/* Custom scrollbar styling */
-::-webkit-scrollbar { 
-  width: 4px; 
+/* Better media defaults */
+img,
+svg,
+video,
+canvas {
+  display: block;
 }
-::-webkit-scrollbar-track { 
-  background: transparent; 
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
 }
-::-webkit-scrollbar-thumb { 
-  background: #2a2a30; 
-  border-radius: 4px; 
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2a2a30;
+  border-radius: 999px;
 }
