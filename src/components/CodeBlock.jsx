@@ -1,9 +1,8 @@
 import { useState } from 'react'
 import CopyButton from './CopyButton.jsx'
 
-// CodeBlock renders an editable textarea with optional run button.
-// It sandboxes console.log output below the code.
-// Usage: <CodeBlock code="const x = 1;" runnable />
+// CodeBlock renders editable runnable code blocks.
+// Used for concept demos, patterns, edge cases, and interview examples.
 
 export default function CodeBlock({ code, runnable = false }) {
   const [editedCode, setEditedCode] = useState(code)
@@ -13,108 +12,119 @@ export default function CodeBlock({ code, runnable = false }) {
   function runCode() {
     setRunning(true)
     setOutput(null)
+
     try {
       const logs = []
+
       // Intercept console.log
       const fakeConsole = {
-        log: (...args) =>
-          logs.push(args.map(a => JSON.stringify(a)).join(' ')),
+        log: (...args) => {
+          logs.push(
+            args.map(a => JSON.stringify(a)).join(' ')
+          )
+        },
       }
+
       // eslint-disable-next-line no-new-func
       const fn = new Function('console', editedCode)
+
       fn(fakeConsole)
+
       setOutput({
         type: 'success',
         lines: logs.length ? logs : ['(no output)'],
       })
     } catch (e) {
-      setOutput({ type: 'error', lines: [e.message] })
+      setOutput({
+        type: 'error',
+        lines: [e.message],
+      })
     }
-    setTimeout(() => setRunning(false), 200)
+
+    setTimeout(() => setRunning(false), 180)
   }
 
   const lineCount = editedCode.split('\n').length
 
   return (
-    <div
-      style={{
-        borderRadius: 8,
-        overflow: 'hidden',
-        border: '1px solid #2a2a30',
-      }}
-    >
-      {/* Editable code area */}
-      <div style={{ background: '#0a0a0c', padding: '14px 16px' }}>
+    <div className="
+      overflow-hidden rounded-xl
+      border border-[#2a2a30]
+      bg-[#111114]
+    ">
+
+      {/* ── Editor ───────────────────────────── */}
+      <div className="bg-[#0a0a0c] px-4 py-3.5">
+
         <textarea
           value={editedCode}
           onChange={e => setEditedCode(e.target.value)}
           spellCheck={false}
+          className="
+            w-full resize-y border-none bg-transparent
+            font-mono-code text-[13px] leading-7
+            text-[#a599ff] outline-none
+            placeholder:text-[#5a5a6a]
+          "
           style={{
-            width: '100%',
-            background: 'transparent',
-            border: 'none',
-            outline: 'none',
-            color: '#a599ff',
-            fontFamily: "'JetBrains Mono', monospace",
-            fontSize: 13,
-            lineHeight: 1.7,
-            resize: 'vertical',
-            minHeight: Math.max(80, lineCount * 22),
+            minHeight: Math.max(88, lineCount * 24),
           }}
         />
+
       </div>
 
-      {/* Toolbar */}
-      <div
-        style={{
-          background: '#1a1a1e',
-          padding: '8px 12px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          borderTop: '1px solid #2a2a30',
-        }}
-      >
+      {/* ── Toolbar ─────────────────────────── */}
+      <div className="
+        flex items-center justify-between
+        border-t border-[#2a2a30]
+        bg-[#1a1a1e]
+        px-3 py-2
+      ">
+
         <CopyButton code={editedCode} />
+
         {runnable && (
           <button
             onClick={runCode}
-            style={{
-              background: running ? '#1e1b3a' : '#7c6af7',
-              color: '#fff',
-              border: 'none',
-              borderRadius: 5,
-              fontSize: 12,
-              padding: '5px 16px',
-              cursor: 'pointer',
-              fontFamily: "'DM Sans', sans-serif",
-              fontWeight: 600,
-              transition: 'all 0.15s',
-            }}
+            className={[
+              'rounded-md px-4 py-1.5',
+              'text-xs font-semibold text-white',
+              'transition-all duration-150',
+              running
+                ? 'bg-[#1e1b3a]'
+                : 'bg-[#7c6af7] hover:bg-[#6d5df0]',
+            ].join(' ')}
           >
             ▶ run
           </button>
         )}
       </div>
 
-      {/* Output panel */}
+      {/* ── Output ──────────────────────────── */}
       {output && (
         <div
-          style={{
-            background: output.type === 'error' ? '#2a0f0f' : '#141416',
-            borderTop: '1px solid #2a2a30',
-            padding: '10px 16px',
-          }}
+          className={[
+            'border-t border-[#2a2a30]',
+            'px-4 py-3',
+            output.type === 'error'
+              ? 'bg-[#2a0f0f]'
+              : 'bg-[#141416]',
+          ].join(' ')}
         >
+
+          <div className="mb-1 text-[10px] font-semibold uppercase tracking-widest text-[#5a5a6a]">
+            Output
+          </div>
+
           {output.lines.map((line, i) => (
             <div
               key={i}
-              style={{
-                fontFamily: "'JetBrains Mono', monospace",
-                fontSize: 12,
-                color: output.type === 'error' ? '#f87171' : '#4ade80',
-                lineHeight: 1.6,
-              }}
+              className={[
+                'font-mono-code text-xs leading-6',
+                output.type === 'error'
+                  ? 'text-[#f87171]'
+                  : 'text-[#4ade80]',
+              ].join(' ')}
             >
               {line}
             </div>
