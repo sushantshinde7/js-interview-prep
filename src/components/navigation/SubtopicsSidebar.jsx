@@ -29,10 +29,10 @@ export default function SubtopicsSidebar() {
   return (
     <aside
       className="
-      w-44 flex-shrink-0
+      w-44 shrink-0
       bg-[#0d0d0f] border-r border-[#2a2a30]
       overflow-y-auto
-      sticky top-[4.5rem]
+      sticky top-18
       h-[calc(100vh-4.5rem)]
     "
     >
@@ -67,7 +67,7 @@ export default function SubtopicsSidebar() {
               // routing is added.
             >
               <span
-                className="w-1.5 h-1.5 rounded-full flex-shrink-0 transition-colors duration-300"
+                className="w-1.5 h-1.5 rounded-full shrink-0 transition-colors duration-300"
                 style={{ background: STATUS_DOT[st] }}
               />
               <span className="truncate">{sub}</span>

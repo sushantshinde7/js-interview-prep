@@ -18,7 +18,7 @@ const SECTIONS = [
 export default function MainNavbar() {
   return (
     <header className="sticky top-0 z-50
-                       flex h-12 flex-shrink-0 items-center justify-between
+                       flex h-12 shrink-0 items-center justify-between
                        border-b border-[#2a2a30]
                        bg-[#0d0d0f]/95
                        px-5

@@ -48,14 +48,14 @@ export default function TopicsNavbar() {
   }
 
   return (
-    <div className="flex items-center bg-[#0d0d0f] border-b border-[#2a2a30] flex-shrink-0 sticky top-12 z-40">
+    <div className="flex items-center bg-[#0d0d0f] border-b border-[#2a2a30] shrink-0 sticky top-12 z-40">
 
       {/* Left arrow — only visible when there's content to scroll back to */}
       <button
         onClick={scrollLeft}
         aria-label="Scroll topics left"
         className={[
-          'flex-shrink-0 w-8 h-9 flex items-center justify-center',
+          'shrink-0 w-8 h-9 flex items-center justify-center',
           'text-[#8a8a9a] hover:text-[#e8e8f0] hover:bg-[#1a1a1e]',
           'border-r border-[#2a2a30] transition-all duration-150',
           'text-xs',
@@ -81,7 +81,7 @@ export default function TopicsNavbar() {
               className={({ isActive }) =>
                 [
                   'flex items-center gap-1.5 px-3 py-1 rounded-md',
-                  'text-[13px] whitespace-nowrap no-underline flex-shrink-0',
+                  'text-[13px] whitespace-nowrap no-underline shrink-0',
                   'transition-all duration-150',
                   isActive
                     ? 'bg-[#1e1b3a] text-[#a599ff] font-medium'
@@ -91,7 +91,7 @@ export default function TopicsNavbar() {
             >
               {/* Small progress dot — green when 100%, accent otherwise, dim when 0 */}
               <span
-                className="w-1.5 h-1.5 rounded-full flex-shrink-0 transition-colors duration-300"
+                className="w-1.5 h-1.5 rounded-full shrink-0 transition-colors duration-300"
                 style={{
                   background:
                     pct === 100 ? '#4ade80'
@@ -110,7 +110,7 @@ export default function TopicsNavbar() {
         onClick={scrollRight}
         aria-label="Scroll topics right"
         className={[
-          'flex-shrink-0 w-8 h-9 flex items-center justify-center',
+          'shrink-0 w-8 h-9 flex items-center justify-center',
           'text-[#8a8a9a] hover:text-[#e8e8f0] hover:bg-[#1a1a1e]',
           'border-l border-[#2a2a30] transition-all duration-150',
           'text-xs',
