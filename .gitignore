@@ -24,3 +24,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+
+# Local personal notes
+INTERNAL_NOTES.md
