@@ -2,8 +2,13 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
+
 import App from "./App.jsx";
+import TutorialsLayout from "./layouts/TutorialsLayout.jsx";
+import TopicLayout from "./layouts/TopicLayout.jsx";
+
 import HomePage from "./pages/HomePage.jsx";
+import TutorialsOverviewPage from "./pages/TutorialsOverviewPage.jsx";
 import TopicPage from "./pages/TopicPage.jsx";
 import QuizPage from "./pages/QuizPage.jsx";
 import CheatsheetPage from "./pages/CheatsheetPage.jsx";
@@ -15,15 +20,43 @@ import ProgressPage from "./pages/ProgressPage.jsx";
 
 const router = createBrowserRouter([
   {
+    // Root layout — renders MainNavbar + <Outlet />
     path: "/",
     element: <App />,
     children: [
+
+      // Home
       { index: true, element: <HomePage /> },
-      { path: "topic/:topicId", element: <TopicPage /> },
-      { path: "topic/:topicId/:subtopicId", element: <TopicPage /> },
+
+      // Tutorials module — TutorialsLayout adds TopicsNavbar for all /tutorials routes
+      {
+        path: "tutorials",
+        element: <TutorialsLayout />,
+        children: [
+
+          // /tutorials → overview page
+          { index: true, element: <TutorialsOverviewPage /> },
+
+          // /tutorials/:topicId — TopicLayout adds SubtopicsSidebar
+          {
+            path: ":topicId",
+            element: <TopicLayout />,
+            children: [
+
+              // /tutorials/:topicId → redirect to first subtopic (TopicLayout handles this)
+              { index: true, element: <TopicPage /> },
+
+              // /tutorials/:topicId/:subtopicId → article page
+              { path: ":subtopicId", element: <TopicPage /> },
+            ],
+          },
+        ],
+      },
+
+      // Other top-level sections (will get their own layouts later)
+      { path: "quiz",       element: <QuizPage /> },
       { path: "cheatsheet", element: <CheatsheetPage /> },
-      { path: "quiz", element: <QuizPage /> },
-      { path: "progress", element: <ProgressPage /> },
+      { path: "progress",   element: <ProgressPage /> },
     ],
   },
 ]);
