@@ -77,7 +77,7 @@ export default function TopicsNavbar() {
           return (
             <NavLink
               key={topic.id}
-              to={`/topic/${topic.id}/${encodeURIComponent(topic.subtopics[0])}`}
+              to={`/tutorials/${topic.id}/${encodeURIComponent(topic.subtopics[0])}`}
               className={({ isActive }) =>
                 [
                   'flex items-center gap-1.5 px-3 py-1 rounded-md',

@@ -55,7 +55,8 @@ export default function SubtopicsSidebar() {
           return (
             <NavLink
               key={sub}
-              to={`/topic/${topicId}/${encodeURIComponent(sub)}`}
+              to={`/tutorials/${topicId}/${encodeURIComponent(sub)}`}
+              end
               className={({ isActive }) =>
                 [
                   "flex items-start gap-2",
