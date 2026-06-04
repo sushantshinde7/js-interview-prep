@@ -1,4 +1,4 @@
-# JS Interview Prep
+# JS Interview Prep(ongoing)
 
 A modern documentation-style JavaScript interview preparation platform focused on conceptual clarity, structured learning, reusable article architecture, and production-grade frontend engineering.
 
