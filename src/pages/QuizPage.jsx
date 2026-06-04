@@ -37,48 +37,105 @@ export default function QuizPage() {
     setDone(false)
   }
 
-  // ── Results screen ───────────────────────
+  const completionPct = Math.round(
+    (score / QUIZ_QUESTIONS.length) * 100
+  )
+
+  // ─────────────────────────────────────────
+  // Results
+  // ─────────────────────────────────────────
+
   if (done) {
     const emoji =
       score === QUIZ_QUESTIONS.length
         ? '🎉'
-        : score >= 3
+        : score >= Math.ceil(QUIZ_QUESTIONS.length * 0.7)
           ? '📖'
           : '💪'
 
     const msg =
       score === QUIZ_QUESTIONS.length
         ? "Perfect! You're interview ready."
-        : score >= 3
+        : score >= Math.ceil(QUIZ_QUESTIONS.length * 0.7)
           ? 'Good work! Review the concepts you missed.'
-          : 'Keep practicing — consistency matters.'
+          : 'Keep practicing and revisit the core concepts.'
 
     return (
-      <div className="mx-auto max-w-3xl px-6 py-10">
+      <div className="mx-auto max-w-4xl px-6 py-8">
 
-        <div className="
-          rounded-2xl border border-[#2a2a30]
-          bg-[#1a1a1e]
-          p-8
-        ">
+        <div
+          className="
+            rounded-xl border border-[#2a2a30]
+            bg-[#1a1a1e]
+            p-8
+          "
+        >
+
+          <div
+            className="
+              mb-2 text-[11px]
+              font-semibold uppercase
+              tracking-[0.18em]
+              text-[#7c6af7]
+            "
+          >
+            Assessment Complete
+          </div>
+
           <div className="mb-4 text-5xl">
             {emoji}
           </div>
 
-          <h1 className="
-            mb-2 text-3xl font-semibold
-            tracking-[-0.03em]
-            text-[#e8e8f0]
-          ">
+          <h1
+            className="
+              mb-3 text-3xl font-semibold
+              tracking-[-0.03em]
+              text-[#e8e8f0]
+            "
+          >
             Score: {score}/{QUIZ_QUESTIONS.length}
           </h1>
 
-          <p className="
-            mb-7 text-[15px] leading-7
-            text-[#8a8a9a]
-          ">
+          <p
+            className="
+              mb-6 max-w-xl
+              text-[15px] leading-7
+              text-[#8a8a9a]
+            "
+          >
             {msg}
           </p>
+
+          <div className="mb-6">
+
+            <div className="mb-2 flex items-center justify-between">
+              <span className="text-xs text-[#8a8a9a]">
+                Accuracy
+              </span>
+
+              <span className="text-xs font-semibold text-[#7c6af7]">
+                {completionPct}%
+              </span>
+            </div>
+
+            <div
+              className="
+                h-2 overflow-hidden
+                rounded-full bg-[#2a2a30]
+              "
+            >
+              <div
+                className="
+                  h-full rounded-full
+                  bg-[#7c6af7]
+                "
+                style={{
+                  width: `${completionPct}%`,
+                }}
+              />
+            </div>
+
+          </div>
 
           <button
             onClick={reset}
@@ -90,66 +147,87 @@ export default function QuizPage() {
               hover:bg-[#6855e3]
             "
           >
-            Try again
+            Retake Quiz
           </button>
+
         </div>
 
       </div>
     )
   }
 
-  // ── Question screen ──────────────────────
+  // ─────────────────────────────────────────
+  // Quiz Screen
+  // ─────────────────────────────────────────
+
   return (
     <div className="mx-auto max-w-4xl px-6 py-8">
 
       {/* Header */}
-      <div className="mb-7">
+      <div className="mb-8">
 
         <div className="mb-2 flex items-center gap-2">
           <div className="h-2 w-2 rounded-full bg-[#7c6af7]" />
 
-          <span className="
-            text-[11px] font-semibold uppercase
-            tracking-[0.18em] text-[#7c6af7]
-          ">
+          <span
+            className="
+              text-[11px] font-semibold uppercase
+              tracking-[0.18em]
+              text-[#7c6af7]
+            "
+          >
             Interview Mode
           </span>
         </div>
 
-        <h1 className="
-          mb-2 text-3xl font-semibold
-          tracking-[-0.03em]
-          text-[#e8e8f0]
-        ">
+        <h1
+          className="
+            mb-3 text-3xl font-semibold
+            tracking-[-0.03em]
+            text-[#e8e8f0]
+          "
+        >
           JavaScript Quiz
         </h1>
 
-        <p className="
-          text-[15px] leading-7
-          text-[#8a8a9a]
-        ">
-          Practice common frontend interview questions with
-          explanations and instant feedback.
+        <p
+          className="
+            max-w-2xl
+            text-[15px] leading-7
+            text-[#8a8a9a]
+          "
+        >
+          Test your understanding of common JavaScript concepts,
+          interview patterns, and tricky language behaviors.
         </p>
+
       </div>
 
       {/* Progress */}
-      <div className="mb-6 flex items-center gap-3">
+      <div className="mb-8">
 
-        <span className="
-          shrink-0 text-xs
-          text-[#8a8a9a]
-        ">
-          Question {idx + 1} of {QUIZ_QUESTIONS.length}
-        </span>
+        <div className="mb-2 flex items-center justify-between">
 
-        <div className="
-          h-1.5 flex-1 overflow-hidden
-          rounded-full bg-[#2a2a30]
-        ">
+          <span className="text-xs text-[#8a8a9a]">
+            Question {idx + 1} of {QUIZ_QUESTIONS.length}
+          </span>
+
+          <span className="text-xs font-semibold text-[#7c6af7]">
+            {score} pts
+          </span>
+
+        </div>
+
+        <div
+          className="
+            h-2 overflow-hidden
+            rounded-full bg-[#2a2a30]
+          "
+        >
           <div
             className="
-              h-full rounded-full bg-[#7c6af7]
+              h-full rounded-full
+              bg-[#7c6af7]
               transition-all duration-300
             "
             style={{
@@ -158,36 +236,38 @@ export default function QuizPage() {
           />
         </div>
 
-        <span className="
-          shrink-0 text-xs font-semibold
-          text-[#7c6af7]
-        ">
-          {score} pts
-        </span>
-
       </div>
 
       {/* Question */}
-      <div className="
-        mb-4 rounded-2xl
-        border border-[#2a2a30]
-        bg-[#1a1a1e]
-        p-5
-      ">
-        <pre className="
-          whitespace-pre-wrap
-          font-sans text-[15px]
-          leading-7 text-[#e8e8f0]
-        ">
+      <div
+        className="
+          mb-5 rounded-xl
+          border border-[#2a2a30]
+          bg-[#1a1a1e]
+          p-5
+        "
+      >
+
+        <pre
+          className="
+            whitespace-pre-wrap
+            font-sans
+            text-[15px]
+            leading-7
+            text-[#e8e8f0]
+          "
+        >
           {q.q}
         </pre>
+
       </div>
 
       {/* Options */}
-      <div className="mb-5 flex flex-col gap-2.5">
+      <div className="mb-5 flex flex-col gap-3">
+
         {q.options.map((opt, i) => {
           let styles =
-            'border-[#2a2a30] bg-[#1a1a1e] text-[#e8e8f0] hover:border-[#3f3f4a] hover:bg-[#232329]'
+            'border-[#2a2a30] bg-[#1a1a1e] text-[#e8e8f0] hover:border-[#3a3a44] hover:bg-[#1d1d22]'
 
           if (selected !== null) {
             if (i === q.answer) {
@@ -215,13 +295,16 @@ export default function QuizPage() {
               ].join(' ')}
             >
 
-              <span className="
-                flex h-6 w-6 shrink-0
-                items-center justify-center
-                rounded-md bg-[#141416]
-                font-mono-code text-[11px]
-                text-[#5a5a6a]
-              ">
+              <span
+                className="
+                  flex h-7 w-7 shrink-0
+                  items-center justify-center
+                  rounded-md bg-[#141416]
+                  text-[11px]
+                  font-semibold
+                  text-[#5a5a6a]
+                "
+              >
                 {String.fromCharCode(65 + i)}
               </span>
 
@@ -232,15 +315,16 @@ export default function QuizPage() {
             </button>
           )
         })}
+
       </div>
 
       {/* Explanation */}
       {selected !== null && (
-        <div className="mb-5">
+        <div className="mb-6">
 
           <div
             className={[
-              'rounded-r-xl border border-[#2a2a30]',
+              'rounded-xl border border-[#2a2a30]',
               'border-l-[3px] bg-[#1a1a1e]',
               'px-4 py-3',
               selected === q.answer
@@ -251,21 +335,24 @@ export default function QuizPage() {
 
             <div
               className={[
-                'mb-1 text-[11px] font-semibold uppercase tracking-wide',
+                'mb-2 text-[11px]',
+                'font-semibold uppercase tracking-wide',
                 selected === q.answer
                   ? 'text-green-400'
                   : 'text-red-400',
               ].join(' ')}
             >
               {selected === q.answer
-                ? '✓ correct'
-                : '✗ incorrect'}
+                ? '✓ Correct'
+                : '✗ Incorrect'}
             </div>
 
-            <p className="
-              text-sm leading-7
-              text-[#e8e8f0]
-            ">
+            <p
+              className="
+                text-sm leading-7
+                text-[#e8e8f0]
+              "
+            >
               {q.explanation}
             </p>
 
@@ -284,15 +371,14 @@ export default function QuizPage() {
             text-sm font-semibold text-white
             transition-all duration-150
             hover:bg-[#6855e3]
-        "
+          "
         >
           {idx < QUIZ_QUESTIONS.length - 1
-            ? 'Next →'
-            : 'See results'}
+            ? 'Next Question →'
+            : 'See Results'}
         </button>
       )}
 
     </div>
   )
 }
-
