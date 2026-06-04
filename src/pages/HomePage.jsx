@@ -9,22 +9,28 @@ export default function HomePage() {
   const { getTopicProgress } = useProgress()
 
   const totalPct = Math.round(
-    TOPICS.reduce((sum, t) => sum + getTopicProgress(t.id), 0) / TOPICS.length
+    TOPICS.reduce(
+      (sum, t) => sum + getTopicProgress(t.id),
+      0
+    ) / TOPICS.length
   )
 
   const stats = [
     {
-      label: 'Total topics',
+      label: 'Total Topics',
       value: TOPICS.length,
       color: 'text-[#a599ff]',
     },
     {
       label: 'Subtopics',
-      value: TOPICS.reduce((s, t) => s + t.subtopics.length, 0),
+      value: TOPICS.reduce(
+        (s, t) => s + t.subtopics.length,
+        0
+      ),
       color: 'text-[#60a5fa]',
     },
     {
-      label: 'Overall progress',
+      label: 'Overall Progress',
       value: `${totalPct}%`,
       color:
         totalPct >= 60
@@ -34,87 +40,125 @@ export default function HomePage() {
   ]
 
   return (
-    <div className="mx-auto max-w-6xl px-6 py-8">
+    <div className="mx-auto max-w-6xl px-6 py-10">
 
-      {/* ── Hero / intro ───────────────────────── */}
-      <section className="mb-8">
+      {/* Hero */}
+      <section className="mb-10">
+
         <div className="mb-3 flex items-center gap-2">
           <div className="h-2 w-2 rounded-full bg-[#7c6af7]" />
-          <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#7c6af7]">
+
+          <span className="
+            text-[11px]
+            font-semibold
+            uppercase
+            tracking-[0.2em]
+            text-[#7c6af7]
+          ">
             JavaScript Interview Platform
           </span>
         </div>
 
         <h1 className="
-          mb-3
-          max-w-3xl
-          text-3xl font-semibold tracking-[-0.03em]
+          mb-4
+          max-w-4xl
+          text-4xl
+          font-semibold
+          tracking-[-0.04em]
           text-[#e8e8f0]
         ">
           Master JavaScript for Frontend Interviews
         </h1>
 
         <p className="
-          max-w-2xl
-          text-[15px] leading-7
+          max-w-3xl
+          text-[15px]
+          leading-7
           text-[#8a8a9a]
         ">
-          Deep-dive concepts, interview-focused theory, practical coding
-          patterns, edge cases, browser behavior, quizzes, and real-world
-          JavaScript nuances — structured for frontend and full-stack
+          Deep-dive concepts, interview-focused theory,
+          practical coding patterns, browser behavior,
+          edge cases, quizzes, and real-world JavaScript
+          nuances — structured for frontend and full-stack
           interview preparation.
         </p>
+
       </section>
 
-      {/* ── Stats ─────────────────────────────── */}
-      <section className="mb-8 grid gap-3 sm:grid-cols-3">
+      {/* Stats */}
+      <section className="mb-10 grid gap-4 sm:grid-cols-3">
+
         {stats.map(stat => (
           <div
             key={stat.label}
             className="
-              rounded-xl border border-[#2a2a30]
-              bg-[#1a1a1e]
-              px-5 py-4
-              transition-all duration-150
+              rounded-2xl
+              border border-[#26262d]
+              bg-[#18181c]
+              px-5 py-5
             "
           >
-            <div className={`mb-1 text-3xl font-semibold ${stat.color}`}>
+            <div
+              className={`mb-1 text-3xl font-semibold ${stat.color}`}
+            >
               {stat.value}
             </div>
 
-            <div className="text-xs tracking-wide text-[#8a8a9a]">
+            <div className="
+              text-xs
+              uppercase
+              tracking-wide
+              text-[#8a8a9a]
+            ">
               {stat.label}
             </div>
           </div>
         ))}
+
       </section>
 
-      {/* ── Topics section ───────────────────── */}
+      {/* Topics */}
       <section>
 
-        <div className="mb-4 flex items-center justify-between">
+        <div className="mb-5 flex items-center justify-between">
+
           <div>
-            <h2 className="text-lg font-semibold text-[#e8e8f0]">
+            <h2 className="
+              text-xl
+              font-semibold
+              text-[#e8e8f0]
+            ">
               Core JavaScript Topics
             </h2>
 
-            <p className="mt-1 text-sm text-[#8a8a9a]">
-              Structured learning paths with concepts, patterns, interview
-              questions, and practical examples.
+            <p className="
+              mt-1
+              text-sm
+              text-[#8a8a9a]
+            ">
+              Structured learning paths with concepts,
+              patterns, interview questions, and practical
+              examples.
             </p>
           </div>
 
           <div className="
-            hidden rounded-md border border-[#2a2a30]
-            bg-[#141418] px-3 py-1 text-xs text-[#5a5a6a]
+            hidden
+            rounded-lg
+            border border-[#26262d]
+            bg-[#141418]
+            px-3 py-1.5
+            text-xs
+            text-[#6a6a76]
             md:block
           ">
             {TOPICS.length} learning tracks
           </div>
+
         </div>
 
-        {/* Topic cards */}
-        <div className="grid gap-3 lg:grid-cols-2">
+        <div className="grid gap-4 lg:grid-cols-2">
+
           {TOPICS.map(topic => {
             const pct = getTopicProgress(topic.id)
 
@@ -123,20 +167,21 @@ export default function HomePage() {
                 key={topic.id}
                 onClick={() =>
                   navigate(
-                    `/topic/${topic.id}/${encodeURIComponent(
-                      topic.subtopics[0]
-                    )}`
+                    `/tutorials/${topic.id}`
                   )
                 }
                 className="
                   group
                   flex items-start gap-4
-                  rounded-xl border border-[#2a2a30]
-                  bg-[#1a1a1e]
-                  p-5 text-left
-                  transition-all duration-150
+                  rounded-2xl
+                  border border-[#26262d]
+                  bg-[#18181c]
+                  p-5
+                  text-left
+                  transition-all duration-200
+                  hover:-translate-y-0.5
                   hover:border-[#7c6af7]
-                  hover:bg-[#1d1d22]
+                  hover:bg-[#1c1c21]
                 "
               >
 
@@ -144,9 +189,13 @@ export default function HomePage() {
                 <div className="mt-0.5 shrink-0">
                   <ProgressRing
                     pct={pct}
-                    size={38}
+                    size={40}
                     stroke={3}
-                    color={pct === 100 ? '#4ade80' : '#7c6af7'}
+                    color={
+                      pct === 100
+                        ? '#4ade80'
+                        : '#7c6af7'
+                    }
                   />
                 </div>
 
@@ -155,24 +204,30 @@ export default function HomePage() {
 
                   {/* Title row */}
                   <div className="mb-2 flex items-center gap-2">
+
                     <h3 className="
                       truncate
-                      text-[15px] font-semibold
+                      text-[15px]
+                      font-semibold
                       text-[#e8e8f0]
                     ">
                       {topic.label}
                     </h3>
 
                     <Tag level={topic.difficulty} />
+
                   </div>
 
                   {/* Subtopics preview */}
                   <div className="
-                    mb-3
-                    text-[13px] leading-6
+                    mb-4
+                    text-[13px]
+                    leading-6
                     text-[#8a8a9a]
                   ">
-                    {topic.subtopics.slice(0, 3).join(' · ')}
+                    {topic.subtopics
+                      .slice(0, 3)
+                      .join(' · ')}
 
                     {topic.subtopics.length > 3 && (
                       <span className="text-[#5a5a6a]">
@@ -187,27 +242,30 @@ export default function HomePage() {
                     flex items-center justify-between
                     text-xs
                   ">
-
-                    <div className="text-[#5a5a6a]">
+                    <span className="text-[#5a5a6a]">
                       {topic.subtopics.length} subtopics
-                    </div>
+                    </span>
 
-                    <div className="
-                      flex items-center gap-1.5
-                      font-medium text-[#7c6af7]
-                      opacity-0 transition-all duration-150
+                    <span className="
+                      flex items-center gap-1
+                      font-medium
+                      text-[#7c6af7]
+                      opacity-0
+                      transition-opacity
                       group-hover:opacity-100
                     ">
-                      Open topic
-                      <span className="translate-y-[0.5px]">→</span>
-                    </div>
-
+                      Open Topic →
+                    </span>
                   </div>
+
                 </div>
+
               </button>
             )
           })}
+
         </div>
+
       </section>
 
     </div>
