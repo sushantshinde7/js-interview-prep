@@ -11,7 +11,7 @@ const SECTIONS = [
   { to: "/",           label: "Home",            end: true  },
   { to: "/tutorials",  label: "Tutorials",       end: false },
 
-  { to: "/cheatsheet", label: "Interview Guide", end: true  },
+  { to: "/interview-guide", label: "Interview Guide", end: true  },
 
   { to: "/quiz",       label: "Quiz",            end: true  },
 
