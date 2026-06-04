@@ -10,8 +10,11 @@ import { NavLink } from "react-router-dom";
 const SECTIONS = [
   { to: "/",           label: "Home",            end: true  },
   { to: "/tutorials",  label: "Tutorials",       end: false },
-  { to: "/quiz",       label: "Interview Guide", end: true  },
+
+  { to: "/cheatsheet", label: "Interview Guide", end: true  },
+
   { to: "/quiz",       label: "Quiz",            end: true  },
+
   { to: "/progress",   label: "Progress",        end: true  },
 ];
 

@@ -55,7 +55,7 @@ const router = createBrowserRouter([
 
       // Other top-level sections (will get their own layouts later)
       { path: "quiz",       element: <QuizPage /> },
-      { path: "cheatsheet", element: <CheatsheetPage /> },
+      { path: "interview-guide", element: <CheatsheetPage /> },
       { path: "progress",   element: <ProgressPage /> },
     ],
   },
