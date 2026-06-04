@@ -1,296 +1,364 @@
-import { useNavigate } from "react-router-dom";
-import { TOPICS } from "../data/topics.js";
-import { useProgress } from "../hooks/useProgress.js";
-import ProgressRing from "../components/ProgressRing.jsx";
-import Tag from "../components/Tag.jsx";
-
-// TutorialsOverviewPage — landing page for /tutorials
-// NOT an article. It's the entry point into the tutorials module.
-// Shows:
-//   - Philosophy / what this is
-//   - How to use it (learning flow)
-//   - Topic overview cards with quick-start links
-
-// ── Static content ──────────────────────────────────────────────────────────
-
-const PHILOSOPHY = [
-  {
-    icon: "◎",
-    title: "Interview-oriented, not encyclopedic",
-    desc: "Every concept is explained from the angle of what interviewers test and what trips developers up — not as a spec reference.",
-  },
-  {
-    icon: "⬡",
-    title: "Mental models over memorization",
-    desc: "You'll learn why JavaScript behaves the way it does. Understanding the model means you can reason through any question, even ones you haven't seen.",
-  },
-  {
-    icon: "◈",
-    title: "Patterns you'll actually use",
-    desc: "Each concept comes with real code patterns — the kind you write on the job and get asked about in interviews — not foo/bar toy examples.",
-  },
-  {
-    icon: "↺",
-    title: "Structured progression",
-    desc: "Topics build on each other. Closures make more sense after scope. Promises make more sense after the event loop. The order is intentional.",
-  },
-];
+import { useNavigate } from 'react-router-dom'
+import { TOPICS } from '../data/topics.js'
+import { useProgress } from '../hooks/useProgress.js'
+import ProgressRing from '../components/ProgressRing.jsx'
+import Tag from '../components/Tag.jsx'
 
 const HOW_IT_WORKS = [
   {
-    step: "01",
-    label: "Pick a topic",
-    desc: "Use the topics bar above or the cards below. Start with Arrays if you're warming up, or jump to Closures if you need a refresh.",
+    step: '01',
+    label: 'Pick a Topic',
+    desc: 'Choose a JavaScript topic and start from the fundamentals or jump directly to concepts you want to revise.',
   },
   {
-    step: "02",
-    label: "Read the concept",
-    desc: "Each subtopic has a tight theory block, real code patterns you can edit and run, and common gotchas to watch for.",
+    step: '02',
+    label: 'Learn the Concepts',
+    desc: 'Study explanations, mental models, code examples, and practical patterns used in real applications.',
   },
   {
-    step: "03",
-    label: "Test yourself",
-    desc: "Every subtopic has interview Q&A cards. Hide the answer, think it through, then reveal. This is where the learning sticks.",
+    step: '03',
+    label: 'Practice Interview Questions',
+    desc: 'Review interview-focused questions and explanations to strengthen your understanding.',
   },
   {
-    step: "04",
-    label: "Track your confidence",
-    desc: "Mark subtopics as 'learning' or 'confident'. Your progress is saved locally. Check the Progress page before an interview.",
+    step: '04',
+    label: 'Track Progress',
+    desc: 'Mark concepts as learning or confident and keep track of your preparation journey.',
   },
-];
-
-const DIFFICULTY_META = {
-  fresher: { label: "Good starting point", color: "text-[#4ade80]" },
-  mid:     { label: "Core interview zone",  color: "text-[#fbbf24]" },
-  tricky:  { label: "High-signal, tricky",  color: "text-[#f87171]" },
-};
-
-// ── Component ────────────────────────────────────────────────────────────────
+]
 
 export default function TutorialsOverviewPage() {
-  const navigate = useNavigate();
-  const { getTopicProgress } = useProgress();
+  const navigate = useNavigate()
+  const { getTopicProgress } = useProgress()
 
-  const totalSubtopics = TOPICS.reduce((s, t) => s + t.subtopics.length, 0);
+  const totalSubtopics = TOPICS.reduce(
+    (sum, topic) => sum + topic.subtopics.length,
+    0
+  )
+
   const overallPct = Math.round(
-    TOPICS.reduce((s, t) => s + getTopicProgress(t.id), 0) / TOPICS.length
-  );
+    TOPICS.reduce(
+      (sum, topic) => sum + getTopicProgress(topic.id),
+      0
+    ) / TOPICS.length
+  )
+
+  const stats = [
+    {
+      label: 'Topics',
+      value: TOPICS.length,
+      color: 'text-[#a599ff]',
+    },
+    {
+      label: 'Concepts',
+      value: totalSubtopics,
+      color: 'text-[#60a5fa]',
+    },
+    {
+      label: 'Your Progress',
+      value: `${overallPct}%`,
+      color:
+        overallPct >= 60
+          ? 'text-[#4ade80]'
+          : 'text-[#fbbf24]',
+    },
+  ]
 
   function goToTopic(topic) {
-    navigate(`/tutorials/${topic.id}/${encodeURIComponent(topic.subtopics[0])}`);
+    navigate(
+      `/tutorials/${topic.id}/${encodeURIComponent(
+        topic.subtopics[0]
+      )}`
+    )
   }
 
   return (
-    <div className="mx-auto max-w-5xl px-6 py-8 pb-16">
+    <div className="mx-auto max-w-6xl px-6 py-10">
 
-      {/* ── Hero ─────────────────────────────────────────────────── */}
-      <section className="mb-12">
+      {/* Hero */}
+      <section className="mb-10">
+
         <div className="mb-3 flex items-center gap-2">
-          <div className="h-1.5 w-1.5 rounded-full bg-[#7c6af7]" />
-          <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#7c6af7]">
+          <div className="h-2 w-2 rounded-full bg-[#7c6af7]" />
+
+          <span className="
+            text-[11px]
+            font-semibold
+            uppercase
+            tracking-[0.2em]
+            text-[#7c6af7]
+          ">
             Tutorials
           </span>
         </div>
 
-        <h1 className="mb-3 max-w-2xl text-3xl font-semibold tracking-tight text-[#e8e8f0]">
-          JavaScript — Structured for Interview Mastery
+        <h1 className="
+          mb-4
+          text-4xl
+          font-semibold
+          tracking-[-0.04em]
+          text-[#e8e8f0]
+        ">
+          JavaScript Learning Paths
         </h1>
 
-        <p className="mb-6 max-w-2xl text-[15px] leading-7 text-[#8a8a9a]">
-          This isn't documentation. It's a structured revision system built specifically
-          for developers preparing for frontend and full-stack interviews. Every topic
-          is curated for signal — the concepts that actually come up, explained the
-          way that actually makes them stick.
+        <p className="
+          max-w-3xl
+          text-[15px]
+          leading-7
+          text-[#8a8a9a]
+        ">
+          Structured JavaScript tutorials designed
+          specifically for frontend interviews.
+          Learn concepts, understand mental models,
+          practice interview questions, and track
+          your progress through every topic.
         </p>
 
-        {/* Quick stats row */}
-        <div className="flex flex-wrap items-center gap-4">
-          {[
-            { value: TOPICS.length,    label: "topics"    },
-            { value: totalSubtopics,   label: "concepts"  },
-            { value: overallPct + "%", label: "your progress" },
-          ].map((s) => (
-            <div
-              key={s.label}
-              className="flex items-baseline gap-1.5"
-            >
-              <span className="text-xl font-semibold text-[#a599ff]">{s.value}</span>
-              <span className="text-sm text-[#5a5a6a]">{s.label}</span>
-            </div>
-          ))}
-        </div>
       </section>
 
-      {/* ── Philosophy ───────────────────────────────────────────── */}
-      <section className="mb-12">
-        <h2 className="mb-1 text-base font-semibold text-[#e8e8f0]">
-          What makes this different
-        </h2>
-        <p className="mb-5 text-sm text-[#5a5a6a]">
-          Most JS resources are either too shallow or too encyclopedic. This sits in between.
-        </p>
+      {/* Stats */}
+      <section className="mb-10 grid gap-4 sm:grid-cols-3">
 
-        <div className="grid gap-3 sm:grid-cols-2">
-          {PHILOSOPHY.map((p) => (
+        {stats.map(stat => (
+          <div
+            key={stat.label}
+            className="
+              rounded-2xl
+              border border-[#26262d]
+              bg-[#18181c]
+              px-5 py-5
+            "
+          >
             <div
-              key={p.title}
-              className="rounded-xl border border-[#2a2a30] bg-[#1a1a1e] px-5 py-4"
+              className={`mb-1 text-3xl font-semibold ${stat.color}`}
             >
-              <div className="mb-2 flex items-center gap-2.5">
-                <span className="text-base text-[#7c6af7]">{p.icon}</span>
-                <span className="text-[13px] font-semibold text-[#e8e8f0]">{p.title}</span>
-              </div>
-              <p className="text-[13px] leading-6 text-[#8a8a9a]">{p.desc}</p>
+              {stat.value}
             </div>
-          ))}
-        </div>
-      </section>
 
-      {/* ── How it works ─────────────────────────────────────────── */}
-      <section className="mb-12">
-        <h2 className="mb-1 text-base font-semibold text-[#e8e8f0]">
-          How to use these tutorials
-        </h2>
-        <p className="mb-5 text-sm text-[#5a5a6a]">
-          A suggested flow — though you can jump to any topic at any time.
-        </p>
-
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          {HOW_IT_WORKS.map((step) => (
-            <div
-              key={step.step}
-              className="rounded-xl border border-[#2a2a30] bg-[#1a1a1e] px-4 py-4"
-            >
-              <div className="mb-3 text-[11px] font-bold tracking-[0.15em] text-[#3a3a44]">
-                {step.step}
-              </div>
-              <div className="mb-1.5 text-[13px] font-semibold text-[#e8e8f0]">
-                {step.label}
-              </div>
-              <p className="text-[12px] leading-5 text-[#8a8a9a]">{step.desc}</p>
+            <div className="
+              text-xs
+              uppercase
+              tracking-wide
+              text-[#8a8a9a]
+            ">
+              {stat.label}
             </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ── Target audience note ─────────────────────────────────── */}
-      <section className="mb-12">
-        <div className="rounded-xl border border-[#2a2a30] bg-[#141416] px-5 py-4">
-          <div className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-[#5a5a6a]">
-            Who this is for
           </div>
-          <p className="text-[13px] leading-6 text-[#8a8a9a]">
-            Developers who have studied JavaScript before and want{" "}
-            <span className="text-[#e8e8f0]">interview mastery</span>,{" "}
-            <span className="text-[#e8e8f0]">conceptual clarity</span>, and{" "}
-            <span className="text-[#e8e8f0]">structured revision</span> — not
-            a beginner syntax guide. If you know what a function is but can't
-            confidently explain closures in an interview, you're in the right place.
-          </p>
-        </div>
+        ))}
+
       </section>
 
-      {/* ── Topics overview ──────────────────────────────────────── */}
+      {/* Learning Flow */}
+      <section className="mb-10">
+
+        <div className="mb-5">
+
+          <h2 className="
+            text-xl
+            font-semibold
+            text-[#e8e8f0]
+          ">
+            Learning Flow
+          </h2>
+
+          <p className="
+            mt-1
+            text-sm
+            text-[#8a8a9a]
+          ">
+            A simple path to get the most from the tutorials.
+          </p>
+
+        </div>
+
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+
+          {HOW_IT_WORKS.map(item => (
+            <div
+              key={item.step}
+              className="
+                rounded-2xl
+                border border-[#26262d]
+                bg-[#18181c]
+                p-5
+              "
+            >
+              <div className="
+                mb-3
+                text-xs
+                font-semibold
+                tracking-[0.15em]
+                text-[#7c6af7]
+              ">
+                {item.step}
+              </div>
+
+              <h3 className="
+                mb-2
+                text-sm
+                font-semibold
+                text-[#e8e8f0]
+              ">
+                {item.label}
+              </h3>
+
+              <p className="
+                text-[13px]
+                leading-6
+                text-[#8a8a9a]
+              ">
+                {item.desc}
+              </p>
+            </div>
+          ))}
+
+        </div>
+
+      </section>
+
+      {/* Topics */}
       <section>
-        <div className="mb-5 flex items-end justify-between">
+
+        <div className="mb-5 flex items-center justify-between">
+
           <div>
-            <h2 className="text-base font-semibold text-[#e8e8f0]">
-              All topics
+            <h2 className="
+              text-xl
+              font-semibold
+              text-[#e8e8f0]
+            ">
+              All Topics
             </h2>
-            <p className="mt-0.5 text-sm text-[#5a5a6a]">
-              Click any topic to jump straight to its first concept.
+
+            <p className="
+              mt-1
+              text-sm
+              text-[#8a8a9a]
+            ">
+              Start from any topic and continue at your own pace.
             </p>
           </div>
-          <span className="hidden text-[11px] text-[#3a3a44] md:block">
-            More topics being added
-          </span>
+
+          <div className="
+            hidden
+            rounded-lg
+            border border-[#26262d]
+            bg-[#141418]
+            px-3 py-1.5
+            text-xs
+            text-[#6a6a76]
+            md:block
+          ">
+            {TOPICS.length} learning tracks
+          </div>
+
         </div>
 
-        <div className="grid gap-3 lg:grid-cols-2">
-          {TOPICS.map((topic) => {
-            const pct = getTopicProgress(topic.id);
-            const meta = DIFFICULTY_META[topic.difficulty];
+        <div className="grid gap-4 lg:grid-cols-2">
+
+          {TOPICS.map(topic => {
+            const pct = getTopicProgress(topic.id)
 
             return (
               <button
                 key={topic.id}
                 onClick={() => goToTopic(topic)}
                 className="
-                  group text-left
+                  group
                   flex items-start gap-4
-                  rounded-xl border border-[#2a2a30] bg-[#1a1a1e]
-                  px-5 py-4
-                  transition-all duration-150
-                  hover:border-[#7c6af7] hover:bg-[#1d1d22]
+                  rounded-2xl
+                  border border-[#26262d]
+                  bg-[#18181c]
+                  p-5
+                  text-left
+                  transition-all duration-200
+                  hover:-translate-y-0.5
+                  hover:border-[#7c6af7]
+                  hover:bg-[#1c1c21]
                 "
               >
-                {/* Progress ring */}
+
                 <div className="mt-0.5 shrink-0">
                   <ProgressRing
                     pct={pct}
-                    size={36}
+                    size={40}
                     stroke={3}
-                    color={pct === 100 ? "#4ade80" : "#7c6af7"}
+                    color={
+                      pct === 100
+                        ? '#4ade80'
+                        : '#7c6af7'
+                    }
                   />
                 </div>
 
                 <div className="min-w-0 flex-1">
-                  {/* Title + tag */}
-                  <div className="mb-1.5 flex items-center gap-2">
-                    <span className="text-[14px] font-semibold text-[#e8e8f0] truncate">
+
+                  <div className="mb-2 flex items-center gap-2">
+
+                    <h3 className="
+                      truncate
+                      text-[15px]
+                      font-semibold
+                      text-[#e8e8f0]
+                    ">
                       {topic.label}
-                    </span>
+                    </h3>
+
                     <Tag level={topic.difficulty} />
+
                   </div>
 
-                  {/* Difficulty meta */}
-                  <div className={`mb-2 text-[11px] font-medium ${meta.color}`}>
-                    {meta.label}
-                  </div>
+                  <div className="
+                    mb-4
+                    text-[13px]
+                    leading-6
+                    text-[#8a8a9a]
+                  ">
+                    {topic.subtopics
+                      .slice(0, 4)
+                      .join(' · ')}
 
-                  {/* Subtopics preview */}
-                  <div className="mb-3 text-[12px] leading-5 text-[#5a5a6a]">
-                    {topic.subtopics.slice(0, 4).join("  ·  ")}
                     {topic.subtopics.length > 4 && (
-                      <span className="text-[#3a3a44]"> +{topic.subtopics.length - 4} more</span>
+                      <span className="text-[#5a5a6a]">
+                        {' '}
+                        +{topic.subtopics.length - 4} more
+                      </span>
                     )}
                   </div>
 
-                  {/* Footer row */}
-                  <div className="flex items-center justify-between">
-                    {/* Progress bar */}
-                    <div className="flex items-center gap-2">
-                      <div className="h-1 w-20 rounded-full bg-[#2a2a30] overflow-hidden">
-                        <div
-                          className="h-full rounded-full transition-all duration-500"
-                          style={{
-                            width: `${pct}%`,
-                            background: pct === 100 ? "#4ade80" : "#7c6af7",
-                          }}
-                        />
-                      </div>
-                      <span className="text-[11px] text-[#5a5a6a]">{pct}%</span>
-                    </div>
+                  <div className="
+                    flex items-center justify-between
+                    text-xs
+                  ">
 
-                    {/* CTA — appears on hover */}
-                    <span className="
-                      text-[12px] font-medium text-[#7c6af7]
-                      flex items-center gap-1
-                      opacity-0 translate-x-1
-                      transition-all duration-150
-                      group-hover:opacity-100 group-hover:translate-x-0
-                    ">
-                      Start
-                      <span>→</span>
+                    <span className="text-[#5a5a6a]">
+                      {topic.subtopics.length} subtopics
                     </span>
+
+                    <span className="
+                      flex items-center gap-1
+                      font-medium
+                      text-[#7c6af7]
+                      opacity-0
+                      transition-opacity
+                      group-hover:opacity-100
+                    ">
+                      Open Topic →
+                    </span>
+
                   </div>
+
                 </div>
+
               </button>
-            );
+            )
           })}
+
         </div>
+
       </section>
 
     </div>
-  );
+  )
 }
