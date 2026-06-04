@@ -22,6 +22,11 @@ export default function ProgressPage() {
   const totalUnseen =
     totalSubtopics - totalConfident - totalLearning
 
+  const overallPct =
+    totalSubtopics === 0
+      ? 0
+      : Math.round((totalConfident / totalSubtopics) * 100)
+
   const pillClasses = {
     unseen:
       'border border-[#2a2a30] bg-[#141416] text-[#5a5a6a]',
@@ -45,7 +50,7 @@ export default function ProgressPage() {
       color: 'text-amber-300',
     },
     {
-      label: 'Not started',
+      label: 'Not Started',
       value: totalUnseen,
       color: 'text-[#5a5a6a]',
     },
@@ -55,39 +60,103 @@ export default function ProgressPage() {
     <div className="mx-auto max-w-5xl px-6 py-8">
 
       {/* Header */}
-      <div className="mb-7">
+      <div className="mb-8">
 
         <div className="mb-2 flex items-center gap-2">
           <div className="h-2 w-2 rounded-full bg-[#7c6af7]" />
 
-          <span className="
-            text-[11px] font-semibold uppercase
-            tracking-[0.18em] text-[#7c6af7]
-          ">
+          <span
+            className="
+              text-[11px] font-semibold uppercase
+              tracking-[0.18em]
+              text-[#7c6af7]
+            "
+          >
             Learning Dashboard
           </span>
         </div>
 
-        <h1 className="
-          mb-2 text-3xl font-semibold
-          tracking-[-0.03em]
-          text-[#e8e8f0]
-        ">
+        <h1
+          className="
+            mb-3 text-3xl font-semibold
+            tracking-[-0.03em]
+            text-[#e8e8f0]
+          "
+        >
           My Progress
         </h1>
 
-        <p className="
-          text-[15px] leading-7
-          text-[#8a8a9a]
-        ">
-          Track confidence levels, learning progress,
-          and topic completion across the platform.
+        <p
+          className="
+            max-w-2xl
+            text-[15px] leading-7
+            text-[#8a8a9a]
+          "
+        >
+          Track topic completion, confidence levels, and learning
+          momentum across your JavaScript interview preparation.
         </p>
 
       </div>
 
+      {/* Overall Progress */}
+      <section
+        className="
+          mb-8 rounded-xl
+          border border-[#2a2a30]
+          bg-[#1a1a1e]
+          p-5
+        "
+      >
+
+        <div className="mb-4 flex items-center justify-between">
+
+          <div>
+            <h2 className="text-sm font-semibold text-[#e8e8f0]">
+              Overall Completion
+            </h2>
+
+            <p className="mt-1 text-xs text-[#8a8a9a]">
+              Based on subtopics marked as confident.
+            </p>
+          </div>
+
+          <div
+            className={[
+              'text-2xl font-semibold',
+              overallPct >= 80
+                ? 'text-green-400'
+                : 'text-[#7c6af7]',
+            ].join(' ')}
+          >
+            {overallPct}%
+          </div>
+
+        </div>
+
+        <div
+          className="
+            h-2 overflow-hidden
+            rounded-full bg-[#2a2a30]
+          "
+        >
+          <div
+            className="
+              h-full rounded-full
+              bg-[#7c6af7]
+              transition-all duration-300
+            "
+            style={{
+              width: `${overallPct}%`,
+            }}
+          />
+        </div>
+
+      </section>
+
       {/* Stats */}
-      <div className="mb-7 grid gap-3 sm:grid-cols-3">
+      <section className="mb-8 grid gap-3 sm:grid-cols-3">
+
         {stats.map(stat => (
           <div
             key={stat.label}
@@ -97,7 +166,9 @@ export default function ProgressPage() {
               px-5 py-4
             "
           >
-            <div className={`mb-1 text-3xl font-semibold ${stat.color}`}>
+            <div
+              className={`mb-1 text-3xl font-semibold ${stat.color}`}
+            >
               {stat.value}
             </div>
 
@@ -106,25 +177,28 @@ export default function ProgressPage() {
             </div>
           </div>
         ))}
-      </div>
 
-      {/* Topic cards */}
+      </section>
+
+      {/* Topics */}
       <div className="flex flex-col gap-4">
 
         {TOPICS.map(topic => {
           const pct = getTopicProgress(topic.id)
 
           return (
-            <div
+            <article
               key={topic.id}
               className="
-                rounded-2xl border border-[#2a2a30]
+                rounded-xl border border-[#2a2a30]
                 bg-[#1a1a1e]
                 p-5
+                transition-all duration-150
+                hover:border-[#3a3a44]
               "
             >
 
-              {/* Header row */}
+              {/* Header */}
               <div className="mb-4 flex items-center gap-3">
 
                 <ProgressRing
@@ -141,19 +215,21 @@ export default function ProgressPage() {
                 <div className="min-w-0 flex-1">
 
                   <div className="mb-1 flex items-center gap-2">
-                    <h2 className="
-                      truncate text-[15px]
-                      font-semibold text-[#e8e8f0]
-                    ">
+
+                    <h2
+                      className="
+                        truncate text-[15px]
+                        font-semibold text-[#e8e8f0]
+                      "
+                    >
                       {topic.label}
                     </h2>
 
                     <Tag level={topic.difficulty} />
+
                   </div>
 
-                  <div className="
-                    text-xs text-[#5a5a6a]
-                  ">
+                  <div className="text-xs text-[#5a5a6a]">
                     {topic.subtopics.length} subtopics
                   </div>
 
@@ -172,7 +248,7 @@ export default function ProgressPage() {
 
               </div>
 
-              {/* Pills */}
+              {/* Subtopics */}
               <div className="flex flex-wrap gap-2">
 
                 {topic.subtopics.map(sub => {
@@ -194,7 +270,7 @@ export default function ProgressPage() {
 
               </div>
 
-            </div>
+            </article>
           )
         })}
 
