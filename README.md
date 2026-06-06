@@ -8,7 +8,7 @@ The project combines interview-focused learning with scalable React application 
 
 ## Project Status
 
-Currently in active frontend architecture and content system development.
+Currently in active frontend architecture and content system development and fundamental react app features.
 
 The app already includes:
 
